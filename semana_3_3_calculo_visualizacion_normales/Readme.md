@@ -48,13 +48,7 @@ Se implemento el script `unity/Normales/Assets/Scripts/NormalsLab.cs` y se uso e
 
 ### Three.js / React Three Fiber
 
-No se realizo implementacion en Three.js / React Three Fiber para este taller.
-
-### Processing
-
-No se realizo implementacion en Processing para este taller.
-
----
+El desarrollo de threejs se muestra al final del documento 
 
 ## Resultados visuales
 
@@ -81,12 +75,6 @@ Inspeccion visual de normales en la malla dentro del entorno Unity.
 ![Resultado Unity 3](./media/Unity2.png)
 
 Comparacion adicional de apariencia y orientacion de normales.
-
-### Three.js - Implementacion
-
-No aplica en este taller.
-
----
 
 ## Codigo relevante
 
@@ -137,11 +125,6 @@ public static Vector3[] CalculateManualNormals(Mesh mesh)
 }
 ```
 
-### Ejemplo de codigo Three.js:
-
-No aplica en este taller.
-
----
 
 ## Prompts utilizados
 
@@ -189,7 +172,37 @@ Se propone ampliar la prueba con mallas mas complejas (no-manifold, huecos, self
 
 Nicolas Quezada se encargo de realizar el apartado de Unity/python para esta tarea
 
+Juan Esteban Santacruz Se encargo del apartado de threejs
+
 ---
+
+
+# Three.js
+
+Se desarrolló una escena 3D utilizando React Three Fiber y Three.js donde se crea una geometría procedural (un plano subdividido) que es deformado mediante funciones matemáticas.
+
+Luego se recalculan las normales de los vértices y se visualizan usando VertexNormalsHelper. Además, se implementó un shader que colorea la superficie según la dirección de la normal.
+
+## Implementaciones
+
+Se creó un plano subdividido y se modificaron sus vértices para generar una superficie ondulada.
+
+Después de deformar la geometría se usó:
+```javascript
+geometry.computeVertexNormals()
+```
+## Resultado 
+
+![Resultado threejs 1](./media/threejs_3_3.gif)
+
+La escena muestra una superficie deformada donde:
+
+se visualizan líneas rojas representando las normales
+
+la superficie se colorea según la dirección de la normal (RGB)
+
+Esto permite entender cómo se orientan las normales en la geometría.
+
 
 ## Referencias
 
