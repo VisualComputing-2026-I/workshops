@@ -48,9 +48,12 @@ Se implemento el script `unity/Normales/Assets/Scripts/NormalsLab.cs` y se uso e
 
 ### Three.js / React Three Fiber
 
-El desarrollo de threejs se muestra al final del documento 
+Se desarrolló una escena 3D utilizando React Three Fiber y Three.js donde se crea una geometría procedural (un plano subdividido) que es deformado mediante funciones matemáticas.
+
+Luego se recalculan las normales de los vértices y se visualizan usando VertexNormalsHelper. Además, se implementó un shader que colorea la superficie según la dirección de la normal.
 
 ## Resultados visuales
+
 
 ### Python - Implementacion
 
@@ -75,6 +78,19 @@ Inspeccion visual de normales en la malla dentro del entorno Unity.
 ![Resultado Unity 3](./media/Unity2.png)
 
 Comparacion adicional de apariencia y orientacion de normales.
+
+### Three.js / React Three Fiber
+
+![Resultado threejs 1](./media/threejs_3_3.gif)
+
+La escena muestra una superficie deformada donde:
+
+se visualizan líneas rojas representando las normales
+
+la superficie se colorea según la dirección de la normal (RGB)
+
+Esto permite entender cómo se orientan las normales en la geometría.
+
 
 ## Codigo relevante
 
@@ -123,6 +139,16 @@ public static Vector3[] CalculateManualNormals(Mesh mesh)
 
     return normals;
 }
+```
+
+
+## Ejemplo de codigo threejs:
+
+Se creó un plano subdividido y se modificaron sus vértices para generar una superficie ondulada.
+
+Después de deformar la geometría se usó:
+```javascript
+geometry.computeVertexNormals()
 ```
 
 
@@ -177,31 +203,6 @@ Juan Esteban Santacruz Se encargo del apartado de threejs
 ---
 
 
-# Three.js
-
-Se desarrolló una escena 3D utilizando React Three Fiber y Three.js donde se crea una geometría procedural (un plano subdividido) que es deformado mediante funciones matemáticas.
-
-Luego se recalculan las normales de los vértices y se visualizan usando VertexNormalsHelper. Además, se implementó un shader que colorea la superficie según la dirección de la normal.
-
-## Implementaciones
-
-Se creó un plano subdividido y se modificaron sus vértices para generar una superficie ondulada.
-
-Después de deformar la geometría se usó:
-```javascript
-geometry.computeVertexNormals()
-```
-## Resultado 
-
-![Resultado threejs 1](./media/threejs_3_3.gif)
-
-La escena muestra una superficie deformada donde:
-
-se visualizan líneas rojas representando las normales
-
-la superficie se colorea según la dirección de la normal (RGB)
-
-Esto permite entender cómo se orientan las normales en la geometría.
 
 
 ## Referencias
