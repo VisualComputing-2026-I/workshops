@@ -66,25 +66,25 @@ Simulación de Z-fighting con triángulos casi coplanares que se cruzan, variand
 
 ### Three.js - Implementación
 
-![Depth Test Three.js](../../Jero/media/depth_test_threejs.gif)
+![Depth Test Three.js](./media/depth_test_threejs.gif)
 
 Toggle de depth test en Three.js: a la izquierda sin depth test (objetos pintados por orden de draw call con artefactos de oclusión), a la derecha con depth test activado (oclusión correcta basada en Z-buffer).
 
-![Z-Fighting Three.js](../../Jero/media/z_fighting_threejs.gif)
+![Z-Fighting Three.js](./media/z_fighting_threejs.gif)
 
 Demostración de Z-fighting en Three.js con dos planos casi coplanares y su resolución mediante polygonOffset.
 
 ### Unity - Implementación
 
-![Camera Ranges Unity](../../Jero/media/camera_ranges_unity.gif)
+![Camera Ranges Unity](./media/camera_ranges_unity.gif)
 
 Visualización del depth buffer en Unity alternando entre modo no-lineal y linealizado, mostrando la distribución de profundidad según los parámetros de la cámara.
 
-![Near Far Unity](../../Jero/media/near_far_unity.gif)
+![Near Far Unity](./media/near_far_unity.gif)
 
 Experimentación con los planos near/far de la cámara en Unity, mostrando cómo ratios extremos degradan la precisión del depth buffer.
 
-![Z-Fighting Unity](../../Jero/media/z_fighting_unity.gif)
+![Z-Fighting Unity](./media/z_fighting_unity.gif)
 
 Demostración de Z-fighting en Unity con planos coplanares y su resolución mediante separación entre superficies.
 
