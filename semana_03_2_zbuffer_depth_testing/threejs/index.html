@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taller Z-Buffer &amp; Depth Testing - Three.js</title>
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Import Map para Three.js y addons desde CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/",
+      "lil-gui": "https://cdn.jsdelivr.net/npm/lil-gui@0.19.2/dist/lil-gui.esm.min.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Canvas de renderizado -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- Panel informativo -->
+  <div id="info-panel">
+    <h1>Taller Z-Buffer &amp; Depth Testing</h1>
+    <p id="info-text">Escena con depth testing activado. Usa el panel de controles para experimentar.</p>
+    <div id="status-bar">
+      <span id="depth-status" class="badge badge-on">Depth Test: ON</span>
+      <span id="view-status" class="badge badge-normal">Vista: Normal</span>
+    </div>
+  </div>
+
+  <!-- Panel de comparacion lado a lado -->
+  <div id="comparison-overlay" class="hidden">
+    <div class="comparison-label left-label">SIN Depth Test</div>
+    <div class="comparison-divider"></div>
+    <div class="comparison-label right-label">CON Depth Test</div>
+  </div>
+
+  <!-- Modulos de la app -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

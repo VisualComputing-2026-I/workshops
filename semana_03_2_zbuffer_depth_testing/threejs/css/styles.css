@@ -1,0 +1,145 @@
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #0a0e17;
+}
+
+/* ===== Canvas ===== */
+#webgl-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== Info Panel ===== */
+#info-panel {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  max-width: 380px;
+  padding: 14px 18px;
+  background: rgba(10, 14, 23, 0.82);
+  border: 1px solid rgba(100, 140, 220, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  color: #e2e8f0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#info-panel h1 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#info-panel p {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #94a3b8;
+}
+
+#status-bar {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+
+.badge-on {
+  background: rgba(52, 211, 153, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+}
+
+.badge-off {
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+}
+
+.badge-normal {
+  background: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+}
+
+.badge-depth {
+  background: rgba(167, 139, 250, 0.18);
+  color: #a78bfa;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+/* ===== Comparison overlay ===== */
+#comparison-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#comparison-overlay.hidden { display: none; }
+
+.comparison-divider {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: rgba(250, 204, 21, 0.7);
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.4);
+}
+
+.comparison-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(10, 14, 23, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.left-label {
+  left: calc(25% - 80px);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+}
+
+.right-label {
+  right: calc(25% - 80px);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+/* ===== lil-gui overrides ===== */
+.lil-gui {
+  --background-color: rgba(10, 14, 23, 0.88) !important;
+  --widget-color: rgba(96, 165, 250, 0.18) !important;
+  --focus-color: rgba(96, 165, 250, 0.4) !important;
+  --number-color: #60a5fa !important;
+  --string-color: #a78bfa !important;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(100, 140, 220, 0.2) !important;
+  border-radius: 10px !important;
+}
