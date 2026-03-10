@@ -7,6 +7,7 @@
 - Cristian Stiven Motta
 - Sebastian Andrade Cedano
 - Esteban Barrera Sanabria
+- Jerónimo Bermúdez Hernández
 
 ## Fecha de entrega
 
