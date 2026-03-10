@@ -1,14 +1,16 @@
 # Implementación de Z-Buffer y Depth Testing
 
-## Nombre del estudiante
-
-<!-- TODO: Completar -->
+## Nombre de los estudiante 
+- Juan Esteban Santacruz Corredor
+- Nicolas Quezada Mora
+- Cristian Stiven Motta
+- Sebastian Andrade Cedano
+- Esteban Barrera Sanabria
+- Jerónimo Bermúdez Hernández
 
 ## Fecha de entrega
 
-<!-- TODO: Completar -->
-
----
+09 de marzo de 2026
 
 ## Descripción breve
 
