@@ -128,7 +128,8 @@ Los efectos de rim lighting y fresnel resaltan los bordes del objeto, dando una 
 *Izquierda: URP/Lit automático. Derecha: Lambert manual — mismo efecto, distinto nivel de control.*
 
 ### Escena general
-*El video muestra todos los objetos de la escena activos simultáneamente y la comparación del pipeline fijo vs programable usando el botón en pantalla, se puede visualizar en `media/scene_comparison.mov`*
+![Pipeline fijo vs programable](media/scene_recording.gif)
+*El video muestra todos los objetos de la escena activos simultáneamente y la comparación del pipeline fijo vs programable usando el botón en pantalla.*
 
 ---
 
