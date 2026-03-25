@@ -3,7 +3,7 @@
 ## Nombre de los estudiantes
 - Juan Esteban Santacruz Corredor
 - Nicolas Quezada Mora
-- Cristian Stiven Motta
+- Cristian Steven Motta Ojeda
 - Sebastian Andrade Cedano
 - Esteban Barrera Sanabria
 - Jerónimo Bermúdez Hernández
@@ -145,7 +145,7 @@ function Controls({ settings, onChange }) {
 |---|---|
 | Juan Esteban Santacruz Corredor | Shader GLSL y rim Fresnel |
 | Nicolas Quezada Mora | Toon shading y wireframe |
-| Cristian Stiven Motta | Integración React Three Fiber y cámara/luces |
+| Cristian Steven Motta Ojeda | Integración React Three Fiber y cámara/luces |
 | Sebastian Andrade Cedano | Panel de controles y UX |
 | Esteban Barrera Sanabria | Pruebas, capturas (png/gif/video) |
 | Jerónimo Bermúdez Hernández | Documentación y referencias |
