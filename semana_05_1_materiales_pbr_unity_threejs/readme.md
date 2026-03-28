@@ -72,7 +72,7 @@ Esta implementación permitió observar las diferencias entre el pipeline de mat
 
 ### Unity - Implementacion
 
-![Resultado Unity](./media/Unity.gif.gif)
+![Resultado Unity](./media/Unity.gif)
 
 Comparacion entre objeto con material PBR y objeto con material plano. Ademas de la Interfaz de usuario con sliders modificando propiedades de metallic y smoothness en tiempo real.
 
