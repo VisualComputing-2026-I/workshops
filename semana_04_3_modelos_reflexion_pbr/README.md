@@ -258,12 +258,6 @@ para visualizar el espacio de parametros.
 
 ---
 
-## Contribuciones
-
-Taller desarrollado por Nicolas Quezada Mora.
-
----
-
 ## Referencias
 
 - LearnOpenGL - Basic Lighting: https://learnopengl.com/Lighting/Basic-Lighting
