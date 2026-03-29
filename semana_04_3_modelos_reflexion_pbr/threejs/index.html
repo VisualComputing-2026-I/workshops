@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taller: Modelos de Reflexion - Lambert, Phong, PBR</title>
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Import Map para Three.js y addons desde CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/",
+      "lil-gui": "https://cdn.jsdelivr.net/npm/lil-gui@0.19.2/dist/lil-gui.esm.min.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Canvas de renderizado -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- Panel informativo -->
+  <div id="info-panel">
+    <h1>Modelos de Reflexion</h1>
+    <p id="info-text">Comparacion de modelos de iluminacion: Lambert, Phong, Blinn-Phong y PBR.</p>
+    <code id="equation-text"></code>
+    <div id="model-badges">
+      <span class="model-badge badge-lambert">Lambert</span>
+      <span class="model-badge badge-phong">Phong</span>
+      <span class="model-badge badge-blinn">Blinn-Phong</span>
+      <span class="model-badge badge-pbr">PBR</span>
+    </div>
+  </div>
+
+  <!-- Panel de leyenda -->
+  <div id="legend-panel">
+    <h3>Modelos de Iluminacion</h3>
+    <div class="legend-item">
+      <div class="legend-color lambert"></div>
+      <span>Lambert: I = k_d * (N . L)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color phong"></div>
+      <span>Phong: + k_s * (R . V)^n</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color blinn"></div>
+      <span>Blinn: + k_s * (N . H)^n</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color pbr"></div>
+      <span>PBR: Cook-Torrance BRDF</span>
+    </div>
+  </div>
+
+  <!-- Info PBR -->
+  <div id="pbr-info">
+    <h3>PBR Parameters</h3>
+    <div class="row">
+      <span class="label">Metalness:</span>
+      <span class="value">0 = Dielectrico, 1 = Metal</span>
+    </div>
+    <div class="row">
+      <span class="label">Roughness:</span>
+      <span class="value">0 = Espejo, 1 = Mate</span>
+    </div>
+    <div class="row">
+      <span class="label">D (NDF):</span>
+      <span class="value">GGX Distribution</span>
+    </div>
+    <div class="row">
+      <span class="label">F (Fresnel):</span>
+      <span class="value">Schlick Approximation</span>
+    </div>
+    <div class="row">
+      <span class="label">G (Geometry):</span>
+      <span class="value">Smith's Method</span>
+    </div>
+  </div>
+
+  <!-- Modulo principal -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #0a0e17;
+}
+
+/* ===== Canvas ===== */
+#webgl-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== Info Panel ===== */
+#info-panel {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  max-width: 420px;
+  padding: 16px 20px;
+  background: rgba(10, 14, 23, 0.88);
+  border: 1px solid rgba(100, 140, 220, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  color: #e2e8f0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#info-panel h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #f87171, #fbbf24, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#info-panel p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+#info-text {
+  margin-bottom: 6px;
+}
+
+#equation-text {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.78rem;
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 8px;
+  display: inline-block;
+}
+
+#equation-text:empty {
+  display: none;
+}
+
+/* ===== Legend Panel ===== */
+#legend-panel {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  padding: 12px 16px;
+  background: rgba(10, 14, 23, 0.85);
+  border: 1px solid rgba(100, 140, 220, 0.2);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  color: #94a3b8;
+  font-size: 0.75rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#legend-panel h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.legend-color.lambert { background: #ef4444; }
+.legend-color.phong { background: #f97316; }
+.legend-color.blinn { background: #eab308; }
+.legend-color.pbr { background: #22c55e; }
+
+/* ===== Model comparison badges ===== */
+#model-badges {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.model-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+
+.badge-lambert {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.badge-phong {
+  background: rgba(249, 115, 22, 0.2);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.badge-blinn {
+  background: rgba(234, 179, 8, 0.2);
+  color: #eab308;
+  border: 1px solid rgba(234, 179, 8, 0.35);
+}
+
+.badge-pbr {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+/* ===== PBR Info ===== */
+#pbr-info {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  max-width: 280px;
+  padding: 12px 16px;
+  background: rgba(10, 14, 23, 0.85);
+  border: 1px solid rgba(100, 140, 220, 0.2);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  color: #94a3b8;
+  font-size: 0.75rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#pbr-info h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #22c55e;
+  margin-bottom: 6px;
+}
+
+#pbr-info .row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+#pbr-info .label {
+  color: #64748b;
+}
+
+#pbr-info .value {
+  color: #e2e8f0;
+  font-family: 'Consolas', monospace;
+}
+
+/* ===== Equation overlay ===== */
+.equation-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 30px;
+  background: rgba(10, 14, 23, 0.92);
+  border: 1px solid rgba(100, 140, 220, 0.3);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  text-align: center;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.equation-overlay.visible {
+  opacity: 1;
+}
+
+.equation-overlay h2 {
+  font-size: 1.2rem;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.equation-overlay code {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 1.1rem;
+  color: #60a5fa;
+  display: block;
+  padding: 10px;
+  background: rgba(96, 165, 250, 0.1);
+  border-radius: 8px;
+}
+
+/* ===== lil-gui overrides ===== */
+.lil-gui {
+  --background-color: rgba(10, 14, 23, 0.92) !important;
+  --widget-color: rgba(96, 165, 250, 0.18) !important;
+  --focus-color: rgba(96, 165, 250, 0.4) !important;
+  --number-color: #60a5fa !important;
+  --string-color: #a78bfa !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(100, 140, 220, 0.2) !important;
+  border-radius: 12px !important;
+}
+
+.lil-gui .title {
+  background: linear-gradient(90deg, #f87171, #fbbf24) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  #info-panel {
+    max-width: 90%;
+    padding: 12px 14px;
+  }
+
+  #info-panel h1 {
+    font-size: 0.95rem;
+  }
+
+  #info-panel p {
+    font-size: 0.78rem;
+  }
+
+  #legend-panel,
+  #pbr-info {
+    display: none;
+  }
+
+  .lil-gui {
+    transform: scale(0.85);
+    transform-origin: top right;
+  }
+}

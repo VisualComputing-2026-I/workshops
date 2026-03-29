@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taller: Modelos de Reflexion - Lambert, Phong, PBR</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0a0e17;
+    }
+    #webgl-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #info-panel {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      max-width: 420px;
+      padding: 16px 20px;
+      background: rgba(10, 14, 23, 0.88);
+      border: 1px solid rgba(100, 140, 220, 0.25);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      color: #e2e8f0;
+      pointer-events: none;
+      z-index: 10;
+    }
+    #info-panel h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #f87171, #fbbf24, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    #info-panel p {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #94a3b8;
+    }
+    #equation-text {
+      font-family: 'Consolas', monospace;
+      font-size: 0.78rem;
+      color: #60a5fa;
+      background: rgba(96, 165, 250, 0.1);
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-top: 8px;
+      display: inline-block;
+    }
+    #equation-text:empty { display: none; }
+    #model-badges {
+      margin-top: 10px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .model-badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .badge-lambert { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .badge-phong { background: rgba(249, 115, 22, 0.2); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.35); }
+    .badge-blinn { background: rgba(234, 179, 8, 0.2); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
+    .badge-pbr { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.35); }
+    #legend-panel {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      padding: 12px 16px;
+      background: rgba(10, 14, 23, 0.85);
+      border: 1px solid rgba(100, 140, 220, 0.2);
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+      color: #94a3b8;
+      font-size: 0.75rem;
+      z-index: 10;
+      pointer-events: none;
+    }
+    #legend-panel h3 { font-size: 0.8rem; font-weight: 600; color: #e2e8f0; margin-bottom: 8px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .legend-color { width: 12px; height: 12px; border-radius: 3px; }
+    .legend-color.lambert { background: #ef4444; }
+    .legend-color.phong { background: #f97316; }
+    .legend-color.blinn { background: #eab308; }
+    .legend-color.pbr { background: #22c55e; }
+  </style>
+</head>
+<body>
+  <canvas id="webgl-canvas"></canvas>
+
+  <div id="info-panel">
+    <h1>Modelos de Reflexion</h1>
+    <p id="info-text">Comparacion de Lambert, Phong, Blinn-Phong y PBR</p>
+    <code id="equation-text"></code>
+    <div id="model-badges">
+      <span class="model-badge badge-lambert">Lambert</span>
+      <span class="model-badge badge-phong">Phong</span>
+      <span class="model-badge badge-blinn">Blinn-Phong</span>
+      <span class="model-badge badge-pbr">PBR</span>
+    </div>
+  </div>
+
+  <div id="legend-panel">
+    <h3>Ecuaciones</h3>
+    <div class="legend-item"><div class="legend-color lambert"></div><span>Lambert: I = kd * (N . L)</span></div>
+    <div class="legend-item"><div class="legend-color phong"></div><span>Phong: + ks * (R . V)^n</span></div>
+    <div class="legend-item"><div class="legend-color blinn"></div><span>Blinn: + ks * (N . H)^n</span></div>
+    <div class="legend-item"><div class="legend-color pbr"></div><span>PBR: Cook-Torrance BRDF</span></div>
+  </div>
+
+  <!-- Three.js y lil-gui desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.164.1/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19.2/dist/lil-gui.umd.min.js"></script>
+
+  <script>
+    // ========== SHADERS ==========
+    const lambertVS = `
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+        vec4 worldPos = modelMatrix * vec4(position, 1.0);
+        vWorldPosition = worldPos.xyz;
+        gl_Position = projectionMatrix * viewMatrix * worldPos;
+      }
+    `;
+
+    const lambertFS = `
+      uniform vec3 uLightPosition;
+      uniform vec3 uLightColor;
+      uniform vec3 uAmbientColor;
+      uniform vec3 uDiffuseColor;
+      uniform float uLightIntensity;
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
+      void main() {
+        vec3 L = normalize(uLightPosition - vWorldPosition);
+        vec3 N = normalize(vNormal);
+        vec3 ambient = uAmbientColor * uDiffuseColor;
+        float NdotL = max(dot(N, L), 0.0);
+        vec3 diffuse = uLightColor * uDiffuseColor * NdotL * uLightIntensity;
+        gl_FragColor = vec4(ambient + diffuse, 1.0);
+      }
+    `;
+
+    const phongVS = lambertVS;
+    const phongFS = `
+      uniform vec3 uLightPosition;
+      uniform vec3 uLightColor;
+      uniform vec3 uAmbientColor;
+      uniform vec3 uDiffuseColor;
+      uniform vec3 uSpecularColor;
+      uniform float uShininess;
+      uniform float uLightIntensity;
+      uniform vec3 uCameraPosition;
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
+      void main() {
+        vec3 N = normalize(vNormal);
+        vec3 L = normalize(uLightPosition - vWorldPosition);
+        vec3 V = normalize(uCameraPosition - vWorldPosition);
+        vec3 ambient = uAmbientColor * uDiffuseColor;
+        float NdotL = max(dot(N, L), 0.0);
+        vec3 diffuse = uLightColor * uDiffuseColor * NdotL * uLightIntensity;
+        vec3 R = reflect(-L, N);
+        float RdotV = max(dot(R, V), 0.0);
+        float specFactor = pow(RdotV, uShininess);
+        vec3 specular = NdotL > 0.0 ? uLightColor * uSpecularColor * specFactor * uLightIntensity : vec3(0.0);
+        gl_FragColor = vec4(ambient + diffuse + specular, 1.0);
+      }
+    `;
+
+    const blinnVS = lambertVS;
+    const blinnFS = `
+      uniform vec3 uLightPosition;
+      uniform vec3 uLightColor;
+      uniform vec3 uAmbientColor;
+      uniform vec3 uDiffuseColor;
+      uniform vec3 uSpecularColor;
+      uniform float uShininess;
+      uniform float uLightIntensity;
+      uniform vec3 uCameraPosition;
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
+      void main() {
+        vec3 N = normalize(vNormal);
+        vec3 L = normalize(uLightPosition - vWorldPosition);
+        vec3 V = normalize(uCameraPosition - vWorldPosition);
+        vec3 ambient = uAmbientColor * uDiffuseColor;
+        float NdotL = max(dot(N, L), 0.0);
+        vec3 diffuse = uLightColor * uDiffuseColor * NdotL * uLightIntensity;
+        vec3 H = normalize(L + V);
+        float NdotH = max(dot(N, H), 0.0);
+        float specFactor = pow(NdotH, uShininess);
+        vec3 specular = NdotL > 0.0 ? uLightColor * uSpecularColor * specFactor * uLightIntensity : vec3(0.0);
+        gl_FragColor = vec4(ambient + diffuse + specular, 1.0);
+      }
+    `;
+
+    const pbrVS = lambertVS;
+    const pbrFS = `
+      #define PI 3.14159265359
+      uniform vec3 uLightPosition;
+      uniform vec3 uLightColor;
+      uniform vec3 uAlbedo;
+      uniform float uMetalness;
+      uniform float uRoughness;
+      uniform float uLightIntensity;
+      uniform vec3 uCameraPosition;
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
+
+      vec3 fresnelSchlick(float cosTheta, vec3 F0) {
+        return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+      }
+      float distributionGGX(vec3 N, vec3 H, float roughness) {
+        float a = roughness * roughness;
+        float a2 = a * a;
+        float NdotH = max(dot(N, H), 0.0);
+        float NdotH2 = NdotH * NdotH;
+        float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+        return a2 / (PI * denom * denom);
+      }
+      float geometrySchlickGGX(float NdotV, float roughness) {
+        float r = (roughness + 1.0);
+        float k = (r * r) / 8.0;
+        return NdotV / (NdotV * (1.0 - k) + k);
+      }
+      float geometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
+        float NdotV = max(dot(N, V), 0.0);
+        float NdotL = max(dot(N, L), 0.0);
+        return geometrySchlickGGX(NdotV, roughness) * geometrySchlickGGX(NdotL, roughness);
+      }
+      void main() {
+        vec3 N = normalize(vNormal);
+        vec3 V = normalize(uCameraPosition - vWorldPosition);
+        vec3 L = normalize(uLightPosition - vWorldPosition);
+        vec3 H = normalize(V + L);
+        vec3 F0 = mix(vec3(0.04), uAlbedo, uMetalness);
+        float distance = length(uLightPosition - vWorldPosition);
+        float attenuation = 1.0 / (distance * distance);
+        vec3 radiance = uLightColor * uLightIntensity * attenuation * 50.0;
+        float NDF = distributionGGX(N, H, uRoughness);
+        float G = geometrySmith(N, V, L, uRoughness);
+        vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);
+        vec3 numerator = NDF * G * F;
+        float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001;
+        vec3 specular = numerator / denominator;
+        vec3 kS = F;
+        vec3 kD = (1.0 - kS) * (1.0 - uMetalness);
+        float NdotL = max(dot(N, L), 0.0);
+        vec3 Lo = (kD * uAlbedo / PI + specular) * radiance * NdotL;
+        vec3 ambient = vec3(0.03) * uAlbedo;
+        vec3 color = ambient + Lo;
+        color = color / (color + vec3(1.0));
+        color = pow(color, vec3(1.0 / 2.2));
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `;
+
+    // ========== SETUP ==========
+    const canvas = document.getElementById('webgl-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x0a0e17);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0a0e17, 20, 50);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 4, 14);
+
+    const controls = new THREE.OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.target.set(0, 0, 0);
+
+    // Light position
+    const lightPos = new THREE.Vector3(4, 5, 4);
+
+    // Materials
+    function createLambertMat(color) {
+      return new THREE.ShaderMaterial({
+        vertexShader: lambertVS,
+        fragmentShader: lambertFS,
+        uniforms: {
+          uLightPosition: { value: lightPos.clone() },
+          uLightColor: { value: new THREE.Color(1, 1, 1) },
+          uLightIntensity: { value: 1.0 },
+          uAmbientColor: { value: new THREE.Color(0.1, 0.1, 0.15) },
+          uDiffuseColor: { value: new THREE.Color(color) }
+        }
+      });
+    }
+
+    function createPhongMat(color) {
+      return new THREE.ShaderMaterial({
+        vertexShader: phongVS,
+        fragmentShader: phongFS,
+        uniforms: {
+          uLightPosition: { value: lightPos.clone() },
+          uLightColor: { value: new THREE.Color(1, 1, 1) },
+          uLightIntensity: { value: 1.0 },
+          uAmbientColor: { value: new THREE.Color(0.1, 0.1, 0.15) },
+          uDiffuseColor: { value: new THREE.Color(color) },
+          uSpecularColor: { value: new THREE.Color(1, 1, 1) },
+          uShininess: { value: 32 },
+          uCameraPosition: { value: camera.position.clone() }
+        }
+      });
+    }
+
+    function createBlinnMat(color) {
+      return new THREE.ShaderMaterial({
+        vertexShader: blinnVS,
+        fragmentShader: blinnFS,
+        uniforms: {
+          uLightPosition: { value: lightPos.clone() },
+          uLightColor: { value: new THREE.Color(1, 1, 1) },
+          uLightIntensity: { value: 1.0 },
+          uAmbientColor: { value: new THREE.Color(0.1, 0.1, 0.15) },
+          uDiffuseColor: { value: new THREE.Color(color) },
+          uSpecularColor: { value: new THREE.Color(1, 1, 1) },
+          uShininess: { value: 32 },
+          uCameraPosition: { value: camera.position.clone() }
+        }
+      });
+    }
+
+    function createPBRMat(color, metalness, roughness) {
+      return new THREE.ShaderMaterial({
+        vertexShader: pbrVS,
+        fragmentShader: pbrFS,
+        uniforms: {
+          uLightPosition: { value: lightPos.clone() },
+          uLightColor: { value: new THREE.Color(1, 1, 1) },
+          uLightIntensity: { value: 1.0 },
+          uAlbedo: { value: new THREE.Color(color) },
+          uMetalness: { value: metalness },
+          uRoughness: { value: roughness },
+          uCameraPosition: { value: camera.position.clone() }
+        }
+      });
+    }
+
+    // Create spheres
+    const sphereGeo = new THREE.SphereGeometry(1.2, 64, 64);
+    const mainColor = 0xcc2936;
+
+    const spheres = [];
+    const materials = [];
+
+    const lambertMat = createLambertMat(mainColor);
+    const lambertSphere = new THREE.Mesh(sphereGeo, lambertMat);
+    lambertSphere.position.set(-5, 0, 0);
+    scene.add(lambertSphere);
+    spheres.push(lambertSphere);
+    materials.push(lambertMat);
+
+    const phongMat = createPhongMat(mainColor);
+    const phongSphere = new THREE.Mesh(sphereGeo, phongMat);
+    phongSphere.position.set(-1.7, 0, 0);
+    scene.add(phongSphere);
+    spheres.push(phongSphere);
+    materials.push(phongMat);
+
+    const blinnMat = createBlinnMat(mainColor);
+    const blinnSphere = new THREE.Mesh(sphereGeo, blinnMat);
+    blinnSphere.position.set(1.7, 0, 0);
+    scene.add(blinnSphere);
+    spheres.push(blinnSphere);
+    materials.push(blinnMat);
+
+    const pbrMat = createPBRMat(mainColor, 0.0, 0.4);
+    const pbrSphere = new THREE.Mesh(sphereGeo, pbrMat);
+    pbrSphere.position.set(5, 0, 0);
+    scene.add(pbrSphere);
+    spheres.push(pbrSphere);
+    materials.push(pbrMat);
+
+    // PBR Grid
+    const smallGeo = new THREE.SphereGeometry(0.6, 48, 48);
+    const pbrGridSpheres = [];
+
+    for (let i = 0; i < 5; i++) {
+      const roughness = i * 0.25;
+      const mat = createPBRMat(0x3b82f6, 0.0, Math.max(roughness, 0.05));
+      const s = new THREE.Mesh(smallGeo, mat);
+      s.position.set(-4 + i * 2, -2.5, 0);
+      scene.add(s);
+      pbrGridSpheres.push({ mesh: s, mat: mat });
+    }
+
+    for (let i = 0; i < 5; i++) {
+      const roughness = i * 0.25;
+      const mat = createPBRMat(0xfbbf24, 1.0, Math.max(roughness, 0.05));
+      const s = new THREE.Mesh(smallGeo, mat);
+      s.position.set(-4 + i * 2, -4, 0);
+      scene.add(s);
+      pbrGridSpheres.push({ mesh: s, mat: mat });
+    }
+
+    // Floor
+    const floorGeo = new THREE.PlaneGeometry(30, 30);
+    const floorMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.85, metalness: 0.05 });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -1.6;
+    scene.add(floor);
+
+    // Light indicator
+    const lightIndicator = new THREE.Mesh(
+      new THREE.SphereGeometry(0.15, 16, 16),
+      new THREE.MeshBasicMaterial({ color: 0xffffff })
+    );
+    lightIndicator.position.copy(lightPos);
+    scene.add(lightIndicator);
+
+    // Scene lights
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x1a1f2e, 0.4);
+    scene.add(hemi);
+    const dir = new THREE.DirectionalLight(0xffffff, 0.3);
+    dir.position.set(10, 10, 5);
+    scene.add(dir);
+
+    // GUI
+    const gui = new lil.GUI({ title: 'Modelos de Iluminacion', width: 300 });
+
+    const params = {
+      shininess: 32,
+      diffuseColor: '#cc2936',
+      specularColor: '#ffffff',
+      lightIntensity: 1.0,
+      animateLight: true,
+      metalness: 0.0,
+      roughness: 0.4,
+      autoRotate: false
+    };
+
+    const fLight = gui.addFolder('Luz');
+    fLight.add(params, 'lightIntensity', 0, 3, 0.05).name('Intensidad').onChange(v => {
+      materials.forEach(m => { if (m.uniforms.uLightIntensity) m.uniforms.uLightIntensity.value = v; });
+      pbrGridSpheres.forEach(s => { s.mat.uniforms.uLightIntensity.value = v; });
+    });
+    fLight.add(params, 'animateLight').name('Animar luz');
+    fLight.open();
+
+    const fMat = gui.addFolder('Material (Lambert/Phong)');
+    fMat.addColor(params, 'diffuseColor').name('Color Diffuse').onChange(v => {
+      const c = new THREE.Color(v);
+      [lambertMat, phongMat, blinnMat].forEach(m => { m.uniforms.uDiffuseColor.value.copy(c); });
+    });
+    fMat.addColor(params, 'specularColor').name('Color Specular').onChange(v => {
+      const c = new THREE.Color(v);
+      [phongMat, blinnMat].forEach(m => { m.uniforms.uSpecularColor.value.copy(c); });
+    });
+    fMat.add(params, 'shininess', 1, 256, 1).name('Shininess').onChange(v => {
+      [phongMat, blinnMat].forEach(m => { m.uniforms.uShininess.value = v; });
+    });
+    fMat.open();
+
+    const fPBR = gui.addFolder('PBR');
+    fPBR.add(params, 'metalness', 0, 1, 0.01).name('Metalness').onChange(v => {
+      pbrMat.uniforms.uMetalness.value = v;
+    });
+    fPBR.add(params, 'roughness', 0.01, 1, 0.01).name('Roughness').onChange(v => {
+      pbrMat.uniforms.uRoughness.value = v;
+    });
+    fPBR.open();
+
+    const fScene = gui.addFolder('Escena');
+    fScene.add(params, 'autoRotate').name('Auto-rotar').onChange(v => {
+      controls.autoRotate = v;
+    });
+
+    // Animation
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      if (params.animateLight) {
+        const x = Math.sin(t * 0.5) * 6;
+        const z = Math.cos(t * 0.5) * 6;
+        lightPos.set(x, 5, z);
+        lightIndicator.position.copy(lightPos);
+      }
+
+      // Update uniforms
+      materials.forEach(m => {
+        if (m.uniforms.uLightPosition) m.uniforms.uLightPosition.value.copy(lightPos);
+        if (m.uniforms.uCameraPosition) m.uniforms.uCameraPosition.value.copy(camera.position);
+      });
+      pbrGridSpheres.forEach(s => {
+        s.mat.uniforms.uLightPosition.value.copy(lightPos);
+        s.mat.uniforms.uCameraPosition.value.copy(camera.position);
+      });
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
