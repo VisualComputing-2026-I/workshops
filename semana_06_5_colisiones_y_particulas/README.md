@@ -133,7 +133,6 @@ public class ColisionParticulas : MonoBehaviour
 ```
 semana_06_5_colisiones_y_particulas/
 ├── media/                               # Evidencias del resultado (png/gif)
-├── taller.md                            # Enunciado y desarrollo del taller
 ├── unity/
 │   ├── Assets/
 │   │   ├── Collision.cs                 # Script de deteccion de impacto y spawn FX
