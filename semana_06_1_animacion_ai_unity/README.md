@@ -7,7 +7,7 @@
 - Juan Esteban Santacruz Corredor
 - Sebastian Andrade Cedano
 - Nicolas Quezada Mora
-- Jeronimo Bermudez
+- Jeronimo Bermudez Hernandez
 
 **Fecha de entrega:** 15 de abril de 2026
 
