@@ -48,7 +48,7 @@ Se abordó el proceso desde la descarga del modelo en Mixamo, su procesamiento e
 El modelo usado 
 
 
-![modelo video](./media/modelo.gift)
+![modelo video](./media/modelo.gif)
 
 El resultado del taller 
 
