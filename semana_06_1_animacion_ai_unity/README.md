@@ -1,4 +1,4 @@
-# Taller — Animación con IA en Unity para Personajes Autónomos
+# Taller de Animación con IA en Unity para Personajes Autónomos
 
 **Nombre del estudiante:**
 
