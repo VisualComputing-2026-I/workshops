@@ -1,6 +1,6 @@
 # Taller Cinematica Inversa Ik
 
-## Nombre del estudiante
+## Nombre de los estudiantes
 - Juan Esteban Santacruz Corredor
 - Nicolas Quezada Mora
 - Cristian Steven Motta Ojeda
@@ -16,7 +16,7 @@
 
 ## Descripcion breve
 
-El objetivo de este taller fue implementar cinematica inversa para un brazo articulado y comparar su comportamiento en distintos entornos. Se desarrollo una escena en React Three Fiber con un objetivo arrastrable, un solver CCD por frame, una linea de referencia y un modo alternativo de cinematica directa con poses predefinidas.
+El objetivo de este taller fue implementar cinematica inversa para un brazo articulado y analizar su respuesta frente a un objetivo interactivo. Se desarrollo una escena en React Three Fiber con un objetivo arrastrable, un solver CCD por frame, una linea de referencia y un modo alternativo de cinematica directa con poses predefinidas para comparar estabilidad y control en tiempo real.
 
 ---
 
@@ -35,6 +35,7 @@ El objetivo de este taller fue implementar cinematica inversa para un brazo arti
 
 - Escena de cinematica inversa con brazo segmentado y objetivo interactivo.
 - Ajuste del brazo para alcanzar el objetivo y visualizacion del resultado.
+- Enfoque en la lectura visual de la convergencia del brazo frente al objetivo.
 
 ---
 
@@ -46,19 +47,11 @@ El objetivo de este taller fue implementar cinematica inversa para un brazo arti
 
 Vista general del brazo alcanzando el objetivo con CCD.
 
-![Three.js IK detalle](./media/threejs.gif)
-
-Detalle del seguimiento del objetivo con la cadena de eslabones.
-
 ### Unity - Implementacion
 
 ![Unity IK vista general](./media/unity.gif)
 
 Vista general de la escena en Unity.
-
-![Unity IK detalle](./media/unity.gif)
-
-Detalle del brazo alcanzando el objetivo en Unity.
 
 ---
 
@@ -100,6 +93,48 @@ for (let iter = 0; iter < iterations; iter += 1) {
 }
 ```
 
+### Arrastre del objetivo en el plano de trabajo
+
+```javascript
+const updateFromRay = (ray) => {
+  if (ray.intersectPlane(dragPlane, hitPoint)) {
+    onChange([hitPoint.x, planeY, hitPoint.z]);
+  }
+};
+
+<mesh
+  position={position}
+  onPointerDown={(event) => {
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setDragging(true);
+    onDragChange?.(true);
+    updateFromRay(event.ray);
+  }}
+  onPointerMove={(event) => {
+    if (!dragging) return;
+    event.stopPropagation();
+    updateFromRay(event.ray);
+  }}
+>
+  <sphereGeometry args={[0.15, 32, 32]} />
+</mesh>
+```
+
+### Toggle IK/FK y HUD de estado
+
+```javascript
+<button
+  type="button"
+  onClick={() => setMode(mode === "ik" ? "fk" : "ik")}
+>
+  Modo: {mode.toUpperCase()}
+</button>
+
+<div className="row">Distancia restante: {stats.distance.toFixed(3)}</div>
+<div className="row">Iteraciones por frame: {stats.iterations}</div>
+```
+
 ### Enlaces al codigo
 
 - Solver y jerarquia de eslabones: [threejs/src/Arm.jsx](./threejs/src/Arm.jsx)
@@ -110,7 +145,8 @@ for (let iter = 0; iter < iterations; iter += 1) {
 
 ## Prompts utilizados
 
-- No se utilizaron prompts de IA generativa.
+- "Implementa un solver CCD simple en JavaScript para un brazo articulado en React Three Fiber"
+- "Como arrastrar un objetivo con el mouse sobre un plano en React Three Fiber"
 
 ---
 
