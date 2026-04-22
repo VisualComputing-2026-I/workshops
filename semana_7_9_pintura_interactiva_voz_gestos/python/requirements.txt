@@ -1,0 +1,4 @@
+mediapipe==0.10.33
+SpeechRecognition==3.16.0
+PyAudio==0.2.14
+numpy>=2,<3
