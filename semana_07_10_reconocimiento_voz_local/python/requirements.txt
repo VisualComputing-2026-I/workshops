@@ -1,0 +1,4 @@
+pocketsphinx==5.0.3
+numpy==2.3.4
+sounddevice==0.5.5
+python-osc==1.9.0
