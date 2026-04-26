@@ -1,0 +1,92 @@
+[
+  {
+    "type": "sphere",
+    "pos": [
+      0,
+      0,
+      0
+    ],
+    "scale": 0.5,
+    "color": "red"
+  },
+  {
+    "type": "cube",
+    "pos": [
+      2,
+      0,
+      0
+    ],
+    "scale": 0.8,
+    "color": "blue"
+  },
+  {
+    "type": "cylinder",
+    "pos": [
+      4,
+      0,
+      0
+    ],
+    "scale": 0.6,
+    "color": "green"
+  },
+  {
+    "type": "sphere",
+    "pos": [
+      0,
+      2,
+      0
+    ],
+    "scale": 1.0,
+    "color": "orange"
+  },
+  {
+    "type": "cube",
+    "pos": [
+      2,
+      2,
+      0
+    ],
+    "scale": 0.4,
+    "color": "purple"
+  },
+  {
+    "type": "cylinder",
+    "pos": [
+      4,
+      2,
+      0
+    ],
+    "scale": 0.9,
+    "color": "yellow"
+  },
+  {
+    "type": "sphere",
+    "pos": [
+      0,
+      4,
+      0
+    ],
+    "scale": 0.7,
+    "color": "cyan"
+  },
+  {
+    "type": "cube",
+    "pos": [
+      2,
+      4,
+      0
+    ],
+    "scale": 1.2,
+    "color": "pink"
+  },
+  {
+    "type": "cylinder",
+    "pos": [
+      4,
+      4,
+      0
+    ],
+    "scale": 0.3,
+    "color": "tomato"
+  }
+]
