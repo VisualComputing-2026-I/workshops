@@ -55,7 +55,7 @@ El botón de regeneración llama a `OnRegenerateButton()`, que asigna una escala
 
 ## Resultados Visuales
 
-### Python — Escena generada con matplotlib
+### Python — Escena generada con `vedo`
 
 ![Escena Python](media/python_escena.png)
 
@@ -63,17 +63,13 @@ El botón de regeneración llama a `OnRegenerateButton()`, que asigna una escala
 
 ![Escena desde JSON](media/python_json.png)
 
-### Python — Archivos OBJ exportados
-
-![Exports](media/python_exports.png)
-
 ### Three.js — Snapshot general de la escena
 
 ![Escena Three.js](media/threejs_escena.png)
 
 ### Three.js — Escena interactiva
 
-![Filtros](media/threejs_filtros.gif)
+![Filtros](media/threejs_escena.gif)
 
 ### Unity — Grilla de objetos generados desde JSON
 
@@ -81,7 +77,7 @@ El botón de regeneración llama a `OnRegenerateButton()`, que asigna una escala
 
 ### Unity — Escena interactiva
 
-![Botón regenerar](media/unity_boton.gif)
+![Botón regenerar](media/unity_escena.png)
 
 ---
 
