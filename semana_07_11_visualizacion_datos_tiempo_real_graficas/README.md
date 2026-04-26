@@ -15,75 +15,86 @@
 
 ## Descripción breve
 
-El objetivo del taller es capturar o simular datos numéricos y visualizarlos en tiempo real mediante gráficos dinámicos, explorando cómo enlazar señales con representaciones gráficas actualizadas en vivo. Se implementó un pipeline completo en Python usando `matplotlib.animation.FuncAnimation` para animación frame a frame y `plotly` para visualización interactiva post-captura. Las cuatro señales simuladas representan métricas reales de monitoreo: temperatura, pulso cardíaco, conteo de objetos (análogo a salida YOLO) y coordenada Y normalizada (análogo a landmark de MediaPipe).
+El objetivo del taller es capturar o simular datos numéricos y visualizarlos en tiempo real mediante gráficos dinámicos, explorando cómo enlazar señales con representaciones gráficas actualizadas en vivo.
+
+En medida de lo anterior, se implementó un pipeline completo en Python usando `matplotlib.animation.FuncAnimation` para animación frame a frame y `plotly` para visualización interactiva post-captura.
+
+Despues de la implementacion queda claro que las cuatro señales simuladas representan métricas reales de monitoreo: temperatura, pulso cardíaco, conteo de objetos (análogo a salida YOLO) y coordenada Y normalizada (análogo a landmark de MediaPipe).
 
 **Entorno utilizado:**
 
-- Python (Jupyter Notebook / VSCode)
-- `matplotlib` — animación con `FuncAnimation` y ventana deslizante
-- `numpy` — generación de señales con `np.sin`, `np.cos`, `np.random`
-- `pandas` — suavizado con media móvil y exportación CSV
-- `plotly` — dashboard interactivo exportado a HTML
+- Python (Jupyter Notebook) - `matplotlib`, `numpy`, `pandas`, `plotly`
 
 ---
 
 ## Implementaciones
 
-### Fuente de datos — Señales simuladas
+Se definieron cuatro señales independientes sobre 200 frames usando numpy.
 
-Se definieron cuatro señales independientes sobre 200 frames usando numpy. La temperatura es una onda sinusoidal base de 22°C con amplitud 3 y ruido gaussiano `np.random.normal(0, 0.4)`, simulando un sensor de temperatura ambiente. El pulso cardíaco usa una sinusoide de frecuencia triple con baseline 75 bpm y ruido `np.random.normal(0, 1.5)`, simulando variabilidad de frecuencia cardíaca. El conteo de objetos son enteros aleatorios entre 0 y 20 suavizados con media móvil de ventana 5 usando `pandas.Series.rolling()`, simulando el conteo cuadro a cuadro de un modelo YOLO. La posición Y es un coseno clippeado al rango [0, 1] con `np.clip`, simulando la coordenada Y normalizada de un landmark facial de MediaPipe.
+1. La temperatura es una onda sinusoidal base de 22°C con amplitud 3 y ruido gaussiano `np.random.normal(0, 0.4)`.
+2. El pulso cardíaco usa una sinusoide de frecuencia triple con baseline 75 bpm y ruido `np.random.normal(0, 1.5)`, simulando variabilidad de frecuencia cardíaca.
+3. El conteo de objetos son enteros aleatorios entre 0 y 20 suavizados con media móvil de ventana 5 usando `pandas.Series.rolling()`, simulando el conteo cuadro a cuadro de un modelo YOLO.
+4. La posición Y es un coseno clippeado al rango [0, 1] con `np.clip`, simulando la coordenada Y normalizada de un landmark facial de MediaPipe.
 
-### Visualización 1 — Temperatura en tiempo real (línea con ventana deslizante)
+### Visualización 1: Temperatura en tiempo real
 
-Se implementó una animación de línea con `FuncAnimation` que muestra los últimos 50 frames de temperatura. El eje X se remapea en cada frame para que la ventana siempre empiece en 0, dando el efecto de scroll continuo hacia la derecha. Un texto en el gráfico muestra el valor actual en tiempo real. El fondo oscuro se configuró con `fig.patch.set_facecolor` y `ax.set_facecolor` para aspecto de dashboard profesional.
+Se implementó una animación de línea con `FuncAnimation` que muestra los últimos 50 frames de temperatura, es decir, el eje X se remapea en cada frame para que la ventana siempre empiece en 0, dando el efecto de scroll continuo hacia la derecha.
 
-### Visualización 2 — Dashboard de 4 señales simultáneas
+### Visualización 2: Dashboard de 4 señales simultáneas
 
-Las cuatro señales se muestran en cuatro subplots verticales sincronizados, todos actualizando en el mismo `update` de `FuncAnimation`. Cada subplot tiene su propio color, etiqueta de unidad y texto de valor actual. Los buffers por señal se mantienen como listas independientes recortadas a la ventana de 60 frames. `blit=True` garantiza que solo se redrawn los artistas modificados, reduciendo la carga de renderizado.
+Las cuatro señales se muestran en cuatro subplots verticales sincronizados, todos actualizando en el mismo `update` de `FuncAnimation`.
 
-### Visualización 3 — Conteo de objetos con histograma animado
+### Visualización 3: Conteo de objetos con histograma animado
 
-El conteo de objetos se visualiza como un histograma acumulado de los últimos 80 frames usando `np.histogram` y barras de `ax.bar`. En cada frame se actualiza la altura de cada barra con `bar.set_height(h)`, mostrando cómo evoluciona la distribución de frecuencias mientras la señal avanza. Esto simula el comportamiento de un monitor de distribución de detecciones en tiempo real.
+El conteo de objetos se visualiza como un histograma acumulado de los últimos 80 frames usando `np.histogram`, en cada frame se actualiza la altura de cada barra para mostrar cómo evoluciona la distribución de frecuencias mientras la señal avanza.
 
-### Visualización 4 — Dashboard interactivo con Plotly
+### Visualización 4: Dashboard interactivo con Plotly
 
-Las cuatro señales completas (200 frames) se grafican en un `go.Figure` con cuatro trazas superpuestas. La posición Y se escala ×100 para que sea visible junto a las otras señales. El gráfico se exporta como `dashboard_plotly.html` con `fig.write_html()`, generando un archivo interactivo con zoom, pan y tooltips sin necesidad de servidor.
+Las cuatro señales completas (200 frames) se grafican en un `go.Figure` con cuatro trazas superpuestas. El gráfico se exporta con `fig.write_html()`, mas abajo se comparte la previsualizacion de lo que es el HTML.
 
-### BONUS — Exportación CSV y estadísticas de rendimiento
+### BONUS: Exportación CSV y estadísticas de rendimiento
 
-Todas las señales se consolidan en un `DataFrame` de pandas y se exportan a `datos_tiempo_real.csv`. Se calculan estadísticas por señal (media, desviación estándar, mínimo, máximo) y métricas de rendimiento estimadas: FPS teóricos basados en el intervalo de 40ms (25 FPS) y duración total de la secuencia.
+Todas las señales se consolidan en un DataFrame de pandas y se exportan a CSV, calculando estadísticas por señal (media, desviación estándar, mínimo, máximo) y métricas de rendimiento estimadas: FPS teóricos basados en el intervalo de 40ms (25 FPS) y duración total de la secuencia.
 
-### BONUS — Captura estática PNG con área rellena y promedio
+### BONUS: Captura estática PNG con área rellena y promedio
 
-El dashboard completo se renderiza como imagen estática con `%matplotlib inline`, añadiendo un `fill_between` semitransparente bajo cada línea y una línea de promedio punteada con su valor anotado. La imagen se exporta a `dashboard_estatico.png` a 150 DPI.
+El dashboard completo se renderiza como imagen estática con `%matplotlib inline`. se exporta a `dashboard_estatico.png` a 150 DPI.
 
 ---
 
 ## Resultados Visuales
 
-### Temperatura en tiempo real — ventana deslizante
+En orden se muestran las capturas o animaciones con la información correpsondiente, como primera instancia se expone los frames simulados en consolas de las 4 señales ya simuladas, con sus respectivos mínimos y máximos.
 
-![Temperatura animada](media/temp_animacion.gif)
+![General](media/python_1.png)
+
+### Temperatura en tiempo real
+
+![Temperatura animada](media/python_1.gif)
 
 ### Dashboard de 4 señales simultáneas
 
-![Dashboard 4 señales](media/dashboard_animacion.gif)
+![Dashboard 4 señales](media/python_2.gif)
 
 ### Histograma animado de conteo de objetos
 
-![Histograma conteo](media/histograma_animacion.gif)
+![Histograma conteo](media/python_3.gif)
 
 ### Dashboard interactivo Plotly
 
-![Plotly dashboard](media/plotly_dashboard.png)
+Para este punto se generó un HTML ubicado en `/exports` para la visualizacion pública.
+
+![Plotly dashboard](media/python_3.png)
 
 ### Captura estática PNG con promedio y área rellena
 
 ![Dashboard estático](media/dashboard_estatico.png)
 
-### CSV exportado y estadísticas en consola
+### Estadísticas de CSV en consola
 
-![CSV y stats](media/csv_stats.png)
+En este punto se hizo la exportacion del CSV al mismo `/exports`, aqui se proyecta un muestreo de consola.
+
+![CSV y stats](media/python_2.png)
 
 ---
 
@@ -117,17 +128,6 @@ ani = animation.FuncAnimation(
 )
 ```
 
-**Histograma animado con np.histogram:**
-
-```python
-def update_bar(frame):
-    bar_buffer.append(conteo[frame])
-    counts, _ = np.histogram(bar_buffer[-HIST_WIN:], bins=bins_edges)
-    for bar, h in zip(bars, counts):
-        bar.set_height(h)
-    return list(bars) + [frame_text]
-```
-
 **Exportación Plotly a HTML interactivo:**
 
 ```python
@@ -148,10 +148,8 @@ df.to_csv('exports/datos_tiempo_real.csv', index=False)
 
 Durante el desarrollo se usaron herramientas de IA generativa para:
 
-1. Diseñar las cuatro señales simuladas con parámetros que representaran métricas reales de monitoreo, eligiendo frecuencias y amplitudes que produjeran formas visualmente distintas entre sí.
-2. Implementar el remapeo del eje X en la ventana deslizante — sin el remap, el eje X crece indefinidamente y la línea no scrollea sino que se encoge hacia la izquierda.
-3. Resolver el uso correcto de `blit=True` en el dashboard de 4 señales — todos los artistas actualizados deben retornarse como lista aplanada en `update`, de lo contrario `blit` solo redibuja el primer subplot.
-4. Orientación sobre la diferencia entre `%matplotlib tk` (ventana externa para `FuncAnimation` en vivo) y `%matplotlib inline` (para celdas estáticas en Jupyter), diferencia que no es obvia y no produce error sino un resultado silenciosamente incorrecto.
+1. Implementar el remapeo del eje X en la ventana deslizante — sin el remap, el eje X crece indefinidamente y la línea no scrollea sino que se encoge hacia la izquierda.
+2. Orientación sobre la diferencia entre `%matplotlib tk` (ventana externa para `FuncAnimation` en vivo) y `%matplotlib inline` (para celdas estáticas en Jupyter), diferencia que no es obvia y no produce error sino un resultado silenciosamente incorrecto.
 
 ---
 
