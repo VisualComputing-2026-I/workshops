@@ -2,7 +2,12 @@
 
 ## Nombre de los estudiantes
 
-- [Completa con los nombres de tu grupo]
+- Juan Esteban Santacruz Corredor
+- Nicolas Quezada Mora
+- Cristian Steven Motta Ojeda
+- Sebastian Andrade Cedano
+- Esteban Barrera Sanabria
+- Jeronimo Bermudez Hernandez
 
 ## Fecha de entrega
 
