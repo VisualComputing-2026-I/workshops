@@ -1,0 +1,13 @@
+{
+  "objects": [
+    { "type": "Sphere",   "x": 0, "y": 0, "z": 0, "scale": 0.8, "colorHex": "#E74C3C" },
+    { "type": "Cube",     "x": 2, "y": 0, "z": 0, "scale": 1.0, "colorHex": "#3498DB" },
+    { "type": "Cylinder", "x": 4, "y": 0, "z": 0, "scale": 0.6, "colorHex": "#2ECC71" },
+    { "type": "Sphere",   "x": 0, "y": 0, "z": 2, "scale": 1.2, "colorHex": "#F39C12" },
+    { "type": "Cube",     "x": 2, "y": 0, "z": 2, "scale": 0.5, "colorHex": "#9B59B6" },
+    { "type": "Cylinder", "x": 4, "y": 0, "z": 2, "scale": 0.9, "colorHex": "#1ABC9C" },
+    { "type": "Sphere",   "x": 0, "y": 0, "z": 4, "scale": 0.7, "colorHex": "#E67E22" },
+    { "type": "Cube",     "x": 2, "y": 0, "z": 4, "scale": 1.1, "colorHex": "#E91E63" },
+    { "type": "Cylinder", "x": 4, "y": 0, "z": 4, "scale": 0.4, "colorHex": "#00BCD4" }
+  ]
+}
