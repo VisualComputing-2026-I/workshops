@@ -1,0 +1,132 @@
+.ui-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  pointer-events: none;
+}
+
+.help-panel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #00ff99;
+  max-width: 380px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+  font-size: 14px;
+}
+
+.help-panel h2 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  color: #00ff99;
+  border-bottom: 2px solid #00ff99;
+  padding-bottom: 10px;
+}
+
+.help-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.control-group h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #ffaa00;
+}
+
+.control-group p {
+  margin: 6px 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.status-info {
+  background: rgba(0, 255, 150, 0.1);
+  padding: 10px;
+  border-left: 3px solid #00ff99;
+  border-radius: 4px;
+}
+
+.status-info p {
+  margin: 5px 0;
+  font-size: 12px;
+  color: #dddddd;
+}
+
+.button-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.reset-btn, .help-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.reset-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ff0000);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+}
+
+.reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.6);
+}
+
+.help-btn {
+  background: linear-gradient(135deg, #00ff99, #00cc77);
+  color: black;
+  box-shadow: 0 4px 15px rgba(0, 255, 150, 0.4);
+}
+
+.help-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 255, 150, 0.6);
+}
+
+.slider-display {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 2px solid #ffaa00;
+  pointer-events: auto;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  min-width: 200px;
+  box-shadow: 0 4px 15px rgba(255, 170, 0, 0.3);
+}
+
+.slider-display > div {
+  padding: 5px 0;
+  color: #ffaa00;
+}
+
+/* Leva Panel Styling */
+.leva-c {
+  --leva-colors-elevation1: rgba(0, 0, 0, 0.8) !important;
+  --leva-colors-elevation2: rgba(20, 20, 30, 0.9) !important;
+  --leva-colors-elevation3: rgba(40, 40, 50, 0.9) !important;
+}
