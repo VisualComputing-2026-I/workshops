@@ -1,0 +1,14 @@
+[project]
+name = "traductor-lsc"
+version = "0.1.0"
+description = "Prototipo de reconocimiento en tiempo real del alfabeto dactilologico de Lengua de Senas Colombiana."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
