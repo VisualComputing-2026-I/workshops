@@ -1,0 +1,111 @@
+{
+  "bf_matcher": {
+    "detector": "orb",
+    "matcher": "bf",
+    "keypoints_a": 2487,
+    "keypoints_b": 2612,
+    "total_matches": 2487,
+    "good_matches": 715,
+    "inliers": 702,
+    "inlier_percentage": 98.18181818181819,
+    "elapsed_ms": 1295.488600000681,
+    "homography": [
+      [
+        0.8095709042763145,
+        -0.048421587346745266,
+        42.091402523503675
+      ],
+      [
+        -0.04754683057793093,
+        0.7844801234020499,
+        30.17257903658547
+      ],
+      [
+        1.1417766714918796e-06,
+        -0.0003176808962676051,
+        1.0
+      ]
+    ]
+  },
+  "flann_matcher": {
+    "detector": "orb",
+    "matcher": "flann",
+    "keypoints_a": 2487,
+    "keypoints_b": 2612,
+    "total_matches": 2487,
+    "good_matches": 757,
+    "inliers": 735,
+    "inlier_percentage": 97.09379128137384,
+    "elapsed_ms": 54.71880000004603,
+    "homography": [
+      [
+        0.8074553604749586,
+        -0.0501061598188932,
+        42.488565398431035
+      ],
+      [
+        -0.047891958377043804,
+        0.7810143238310561,
+        30.595804900271702
+      ],
+      [
+        -1.2912194946634377e-06,
+        -0.0003241597152447991,
+        1.0
+      ]
+    ]
+  },
+  "object_detection": {
+    "detector": "orb",
+    "matcher": "flann",
+    "keypoints_a": 2487,
+    "keypoints_b": 3000,
+    "total_matches": 2487,
+    "good_matches": 708,
+    "inliers": 672,
+    "inlier_percentage": 94.91525423728814,
+    "elapsed_ms": 66.8098000005557,
+    "homography": [
+      [
+        0.8663784308896387,
+        -0.1657000398849319,
+        160.3969663091247
+      ],
+      [
+        -0.09781921277199918,
+        0.6644348624182713,
+        175.37359452836057
+      ],
+      [
+        -8.897514672163916e-05,
+        -0.0004336978170885049,
+        1.0
+      ]
+    ]
+  },
+  "panorama": {
+    "image_count": 3,
+    "elapsed_ms": 116.3261000001512,
+    "pairs": [
+      {
+        "pair": [
+          "data\\panorama\\pano_1.jpg",
+          "data\\panorama\\pano_2.jpg"
+        ],
+        "matches": 661,
+        "inliers": 581,
+        "inlier_percentage": 87.89712556732223
+      },
+      {
+        "pair": [
+          "data\\panorama\\pano_2.jpg",
+          "data\\panorama\\pano_3.jpg"
+        ],
+        "matches": 443,
+        "inliers": 413,
+        "inlier_percentage": 93.22799097065463
+      }
+    ],
+    "output": "outputs_orb\\panorama.jpg"
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "bf_matcher": {
+    "detector": "sift",
+    "matcher": "bf",
+    "keypoints_a": 539,
+    "keypoints_b": 766,
+    "total_matches": 539,
+    "good_matches": 245,
+    "inliers": 210,
+    "inlier_percentage": 85.71428571428571,
+    "elapsed_ms": 39.941799999724026,
+    "homography": [
+      [
+        0.8071285610004542,
+        -0.048909178955868396,
+        42.43894260247453
+      ],
+      [
+        -0.04853491247365804,
+        0.7842836750713078,
+        30.174954485190785
+      ],
+      [
+        -3.0746904025055183e-06,
+        -0.0003188292491467415,
+        1.0
+      ]
+    ]
+  },
+  "flann_matcher": {
+    "detector": "sift",
+    "matcher": "flann",
+    "keypoints_a": 539,
+    "keypoints_b": 766,
+    "total_matches": 539,
+    "good_matches": 245,
+    "inliers": 210,
+    "inlier_percentage": 85.71428571428571,
+    "elapsed_ms": 47.91790000126639,
+    "homography": [
+      [
+        0.8071285610004542,
+        -0.048909178955868396,
+        42.43894260247453
+      ],
+      [
+        -0.04853491247365804,
+        0.7842836750713078,
+        30.174954485190785
+      ],
+      [
+        -3.0746904025055183e-06,
+        -0.0003188292491467415,
+        1.0
+      ]
+    ]
+  },
+  "object_detection": {
+    "detector": "sift",
+    "matcher": "flann",
+    "keypoints_a": 539,
+    "keypoints_b": 836,
+    "total_matches": 539,
+    "good_matches": 264,
+    "inliers": 223,
+    "inlier_percentage": 84.46969696969697,
+    "elapsed_ms": 74.25700000021607,
+    "homography": [
+      [
+        0.8657746221211557,
+        -0.16107233043342165,
+        159.78435479933765
+      ],
+      [
+        -0.09948228247778933,
+        0.6686223720141357,
+        175.166524261531
+      ],
+      [
+        -9.3487121404242e-05,
+        -0.0004246644886590282,
+        1.0
+      ]
+    ]
+  },
+  "panorama": {
+    "image_count": 3,
+    "elapsed_ms": 150.24190000076487,
+    "pairs": [
+      {
+        "pair": [
+          "data\\panorama\\pano_1.jpg",
+          "data\\panorama\\pano_2.jpg"
+        ],
+        "matches": 184,
+        "inliers": 159,
+        "inlier_percentage": 86.41304347826087
+      },
+      {
+        "pair": [
+          "data\\panorama\\pano_2.jpg",
+          "data\\panorama\\pano_3.jpg"
+        ],
+        "matches": 112,
+        "inliers": 95,
+        "inlier_percentage": 84.82142857142857
+      }
+    ],
+    "output": "video_demo_sift\\panorama.jpg"
+  }
+}
