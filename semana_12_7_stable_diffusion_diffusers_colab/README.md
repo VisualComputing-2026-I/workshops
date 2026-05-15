@@ -1,4 +1,4 @@
-# Semana X - Generación de Imágenes con Stable Diffusion
+# Semana 12 - Generación de Imágenes con Stable Diffusion
 
 ## Nombre del estudiante
 
